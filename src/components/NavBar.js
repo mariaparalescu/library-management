@@ -9,41 +9,31 @@ import {
     NavLink,
 } from '@strapi/design-system/MainNav';
 import {Divider, Box, Breadcrumbs, Crumb} from '@strapi/design-system';
-import {Write, Layer, Landscape, Information, Puzzle, ShoppingCart, Cog} from '@strapi/icons';
+import {Write, Layer, Book, Archive, User, Dashboard} from '@strapi/icons';
 import {BaseHeaderLayout} from "@strapi/design-system/Layout";
 
+import {Outlet} from "react-router-dom";
 const NavBar = () => {
     const [condensed, setCondensed] = useState(false);
     return <Box background="neutral100"  style={{
         height: '100vh', display: 'flex'
     }}>
         <MainNav condensed={condensed}>
-            <NavBrand workplace="Workplace" title="Library dashboard" icon={<i className="book icon violet"></i>} />
+            <NavBrand workplace="Workplace" title="Library dashboard" icon={<Write />} />
             <Divider />
             <NavSections>
-                <NavLink to="/laa" icon={<Write />} className="active">
+                <NavLink to="/" icon={<Dashboard />} className="active">
                     Home
                 </NavLink>
-                <NavSection label="Books">
-                    <NavLink to="/" icon={<Layer />}>
-                        Builder
+                <NavSection label="Categories">
+                    <NavLink to="/books" icon={<Book />}>
+                        Books
                     </NavLink>
-                    <NavLink to="/content" icon={<Landscape />}>
-                        Media library
+                    <NavLink to="/users" icon={<User />}>
+                        Users
                     </NavLink>
-                    <NavLink to="/content" icon={<Information />}>
-                        Documentation
-                    </NavLink>
-                </NavSection>
-                <NavSection label="Users">
-                    <NavLink to="/builder" icon={<Puzzle />}>
-                        Plugins
-                    </NavLink>
-                    <NavLink to="/content" icon={<ShoppingCart />}>
-                        Marketplace
-                    </NavLink>
-                    <NavLink to="/content" icon={<Cog />}>
-                        Settings
+                    <NavLink to="/rental" icon={<Archive />}>
+                        Rented books
                     </NavLink>
                 </NavSection>
             </NavSections>
@@ -54,10 +44,14 @@ const NavBar = () => {
                 {condensed ? 'Expanded the navbar' : 'Collapse the navbar'}
             </NavCondense>
         </MainNav>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
             <BaseHeaderLayout title="Media Library" subtitle={<Breadcrumbs label="folders">
                 <Crumb>Animals</Crumb>
                 <Crumb>Cats</Crumb>
             </Breadcrumbs>} as="h2" />
+            <Outlet/>
+        </div>
+
     </Box>;
 }
 
