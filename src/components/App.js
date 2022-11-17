@@ -3,10 +3,7 @@ import NavBar from './NavBar';
 import {ThemeProvider} from "@strapi/design-system/ThemeProvider"
 import {lightTheme} from "@strapi/design-system/themes"
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import BooksTable from "./BooksTable";
-import MinimalNabar from "./MinimalNabar";
-import {Crumb, Breadcrumbs, Box} from '@strapi/design-system';
-import { BaseHeaderLayout, HeaderLayout } from '@strapi/design-system/Layout';
+import ManageBooks from "../pages/ManageBooks"
 
 function App (){
     return(
@@ -18,7 +15,9 @@ function App (){
                 >
                 {/*<Route path="/" element={ <MinimalNabar />}>*/}
                    <Route index element={<div>Homepage</div>}/>
-                   <Route path="books" element={<ThemeProvider theme={lightTheme}><BooksTable /></ThemeProvider>}/>
+                   <Route path="books" element={<ThemeProvider theme={lightTheme}><ManageBooks /></ThemeProvider>}/>
+                   <Route path="users" element={<div>users</div>}/>
+                   <Route path="rental" element={<div>books</div>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

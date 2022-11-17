@@ -88,7 +88,6 @@ const BooksTable = () => {
                     </Tr>)}
                 </Tbody>
             </Table>
-            <Modal />
         </Box>;
 }
 export default BooksTable;

@@ -5,10 +5,7 @@ const Modal = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [date, setDate] = useState();
     return <>
-        <Button onClick={() => setIsVisible(prev => !prev)}>Click to open Modal</Button>
-        <p style={{
-            height: '60vh'
-        }}>This is a raw content</p>
+        <Button size="S" onClick={() => setIsVisible(prev => !prev)}>Click to open Modal</Button>
         {isVisible && <ModalLayout onClose={() => setIsVisible(prev => !prev)} labelledBy="title">
             <ModalHeader>
                 <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
