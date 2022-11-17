@@ -2,6 +2,7 @@ import React from "react";
 import {Outlet} from "react-router-dom";
 
 const MinimalNabar = () => {
+
     return(
     <>
         <div className="ui menu">

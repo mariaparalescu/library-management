@@ -8,33 +8,42 @@ import { BaseCheckbox } from '@strapi/design-system/BaseCheckbox';
 import { Avatar } from '@strapi/design-system';
 import { IconButton } from '@strapi/design-system/IconButton';
 import Modal from "./Modal";
+import BookForm from "./BookForm";
+import { useData } from "../contexts/DataProvider";
 
 
 const BooksTable = () => {
+        const {data, setData} = useData();
         const ROW_COUNT = 6;
         const COL_COUNT = 10;
         const entry = {
-            cover: 'https://avatars.githubusercontent.com/u/3874873?v=4',
-            description: 'Chez Léon is a human sized Parisian',
-            category: 'French cuisine',
-            contact: 'Leon Lafrite'
+            isbn: 9781234567891234,
+            title: 'Booky',
+            author: 'Lala',
+            price: 'Chez Léon is a human sized Parisian',
+            copies: 1,
         };
         const entries = [];
-
-        for (let i = 0; i < 5; i++) {
+        console.log(data);
+        for (let i = 0; i < data.books.length; i++) {
             entries.push({ ...entry,
                 id: i
             });
         }
 
+        console.log(entries)
+
         return <Box padding={8} background="neutral100">
-            <Table colCount={COL_COUNT} rowCount={ROW_COUNT} footer={<TFooter onClick={(e)=>{e.preventDefault(); console.log('plm')}} icon={<Plus />}>Add a new book</TFooter>}>
+            <Table colCount={COL_COUNT} rowCount={ROW_COUNT} footer={<Modal content = { <BookForm />} />}>
                 <Thead>
                     <Tr>
                         <Th>
                             <BaseCheckbox aria-label="Select all entries" />
                         </Th>
                         <Th action={<IconButton label="Sort on ID" icon={<CarretDown />} noBorder />}>
+                            <Typography variant="sigma">ID</Typography>
+                        </Th>
+                        <Th action={<IconButton label="Sort on ISBN" icon={<CarretDown />} noBorder />}>
                             <Typography variant="sigma">ISBN</Typography>
                         </Th>
                         <Th action={<IconButton label="Sort on ID" icon={<CarretDown />} noBorder />}>
@@ -65,17 +74,20 @@ const BooksTable = () => {
                         <Td contenteditable='true'>
                             <Typography textColor="neutral800">{entry.id}</Typography>
                         </Td>
-                        <Td>
-                            <Avatar src={entry.cover} alt={entry.contact} />
+                        <Td contenteditable='true'>
+                            <Typography textColor="neutral800">{entry.isbn}</Typography>
                         </Td>
                         <Td>
-                            <Typography textColor="neutral800">{entry.description}</Typography>
+                            <Typography textColor="neutral800">{entry.title}</Typography>
                         </Td>
                         <Td>
-                            <Typography textColor="neutral800">{entry.category}</Typography>
+                            <Typography textColor="neutral800">{entry.author}</Typography>
                         </Td>
                         <Td>
-                            <Typography textColor="neutral800">{entry.contact}</Typography>
+                            <Typography textColor="neutral800">{entry.price}</Typography>
+                        </Td>
+                        <Td>
+                            <Typography textColor="neutral800">{entry.copies}</Typography>
                         </Td>
                         <Td>
                             <Flex>

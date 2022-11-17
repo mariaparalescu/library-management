@@ -6,10 +6,6 @@ const ManageBooks = () => {
     return(
         <>
             <BooksTable />
-            <div style={{display: 'flex', justifyContent: 'center'}}>
-                <Modal />
-            </div>
-
         </>
     );
 }
