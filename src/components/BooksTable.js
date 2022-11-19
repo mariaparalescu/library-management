@@ -20,18 +20,16 @@ const BooksTable = () => {
             isbn: 9781234567891234,
             title: 'Booky',
             author: 'Lala',
-            price: 'Chez Léon is a human sized Parisian',
+            price: '5',
             copies: 1,
         };
         const entries = [];
-        console.log(data);
+
         for (let i = 0; i < data.books.length; i++) {
-            entries.push({ ...entry,
+            entries.push({ ...data.books[i],
                 id: i
             });
         }
-
-        console.log(entries)
 
         return <Box padding={8} background="neutral100">
             <Table colCount={COL_COUNT} rowCount={ROW_COUNT} footer={<Modal content = { <BookForm />} />}>
