@@ -1,5 +1,5 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 const MinimalNabar = () => {
     return (
@@ -34,7 +34,7 @@ const MinimalNabar = () => {
             </div>
             <Outlet />
         </>
-    )
-}
+    );
+};
 
-export default MinimalNabar
+export default MinimalNabar;

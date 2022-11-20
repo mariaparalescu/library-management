@@ -1,69 +1,66 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
     ModalLayout,
     ModalBody,
     ModalHeader,
     ModalFooter,
-} from '@strapi/design-system/ModalLayout'
-import { Button, Typography, DatePicker, Box } from '@strapi/design-system'
-import { Plus } from '@strapi/icons'
-import { TFooter } from '@strapi/design-system/Table'
-import { useData } from '../contexts/DataProvider'
-import { Formik, Form, Field, useFormik } from 'formik'
-import * as Yup from 'yup'
-import { TextInput } from '@strapi/design-system/TextInput'
-import { Tooltip } from '@strapi/design-system/Tooltip'
+} from '@strapi/design-system/ModalLayout';
+import { Button, Typography, DatePicker, Box } from '@strapi/design-system';
+import { Plus } from '@strapi/icons';
+import { TFooter } from '@strapi/design-system/Table';
+import { useData } from '../contexts/DataProvider';
+import { Formik, Form, Field, useFormik } from 'formik';
+import * as Yup from 'yup';
+import { TextInput } from '@strapi/design-system/TextInput';
+import { Tooltip } from '@strapi/design-system/Tooltip';
 
-const Modal = (props) => {
-    const [isVisible, setIsVisible] = useState(false)
-    const { data, setData } = useData()
+const AddUserModal = (props) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const { data, setData } = useData();
 
-    const BookFormSchema = Yup.object().shape({
-        title: Yup.string()
-            .min(2, 'The title should be at least 2 characters long')
-            .max(50, "The title should have maximum 50 characters'")
+    const UserFormSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(2, 'The name should be at least 2 characters long')
+            .max(50, "The name should have maximum 50 characters'")
             .matches(
                 /^([ \u00c0-\u01ffa-zA-Z'\-])+$/,
                 "The name can contain only letters, spaces and these special characters: ' and - "
             )
             .required('Required'),
-        author: Yup.string()
-            .min(2, 'The title should be at least 2 characters long')
-            .max(50, "The title should have maximum 50 characters'")
+        surname: Yup.string()
+            .min(2, 'The surname should be at least 2 characters long')
+            .max(50, "The surname should have maximum 50 characters'")
             .matches(
                 /^([ \u00c0-\u01ffa-zA-Z'\-])+$/,
-                "The name can contain only letters, spaces and these special characters: ' and - "
+                "The surname can contain only letters, spaces and these special characters: ' and - "
             )
             .required('Required'),
-        price: Yup.number()
-            .positive()
-            .min(0.1, 'The price should be greater than 0')
+        phoneNumber: Yup.string()
+            .length(10, 'The phone number must be 10 digits long')
+            .matches(/^\d+$/, 'The phone number can contain only digits ')
             .required('Required'),
-        isbn: Yup.string()
-            .matches(
-                /978[0-9]{10}/,
-                'The number should start with 978 and should have the length 13'
-            )
-            .required('Required'),
-    })
+    });
 
     const formik = useFormik({
         initialValues: {
-            title: '',
-            author: '',
-            price: '',
-            isbn: '',
+            name: '',
+            surname: '',
+            phoneNumber: '',
         },
-        validationSchema: BookFormSchema,
+        validationSchema: UserFormSchema,
         onSubmit: (values) => {
             if (formik.isValid) {
-                console.log(data)
-                const newBook = { ...values, copies: 1, available: 1 }
-                setData({ ...data, books: [...data.books, newBook] })
-                setIsVisible((prev) => !prev)
+                const newUser = {
+                    ...values,
+                    hasRentedBook: false,
+                    startingDate: '-',
+                    hasToPay: '-',
+                };
+                setData({ ...data, users: [...data.users, newUser] });
+                setIsVisible((prev) => !prev);
             }
         },
-    })
+    });
 
     return (
         <>
@@ -71,7 +68,7 @@ const Modal = (props) => {
                 onClick={() => setIsVisible((prev) => !prev)}
                 icon={<Plus />}
             >
-                Add a new book
+                Add a new user
             </TFooter>
             {isVisible && (
                 <ModalLayout
@@ -90,22 +87,22 @@ const Modal = (props) => {
                     </ModalHeader>
                     <ModalBody>
                         {/*<DatePicker onChange={setDate} selectedDate={date} label="Date picker" name="datepicker" clearLabel={'Clear the datepicker'} onClear={() => setDate(undefined)} selectedDateLabel={formattedDate => `Date picker, current is ${formattedDate}`} />*/}
-                        <form id="book-form" onSubmit={formik.handleSubmit}>
+                        <form id="user-form" onSubmit={formik.handleSubmit}>
                             <Box paddingTop={2} paddingBottom={2}>
                                 <TextInput
-                                    id="title"
-                                    name="title"
-                                    label="title"
+                                    id="name"
+                                    name="name"
+                                    label="Name"
                                     error={
-                                        formik.touched.title &&
-                                        Boolean(formik.errors.title)
-                                            ? formik.errors.title
+                                        formik.touched.name &&
+                                        Boolean(formik.errors.name)
+                                            ? formik.errors.name
                                             : ''
                                     }
                                     placeholder="Book title"
                                     required
                                     hint="Example: Romeo and Juliet"
-                                    value={formik.values.title}
+                                    value={formik.values.name}
                                     onChange={formik.handleChange}
                                     labelAction={
                                         <Tooltip description="Content of the tooltip">
@@ -123,18 +120,19 @@ const Modal = (props) => {
                             </Box>
                             <Box paddingTop={2} paddingBottom={2}>
                                 <TextInput
-                                    id="author"
-                                    name="author"
-                                    label="author"
+                                    id="surname"
+                                    name="surname"
+                                    label="Surname"
+                                    required
                                     error={
-                                        formik.touched.author &&
-                                        Boolean(formik.errors.author)
-                                            ? formik.errors.author
+                                        formik.touched.surname &&
+                                        Boolean(formik.errors.surname)
+                                            ? formik.errors.surname
                                             : ''
                                     }
                                     placeholder="Book author"
                                     hint="Example: William Shakespeare"
-                                    value={formik.values.author}
+                                    value={formik.values.surname}
                                     onChange={formik.handleChange}
                                     labelAction={
                                         <Tooltip description="Content of the tooltip">
@@ -152,50 +150,18 @@ const Modal = (props) => {
                             </Box>
                             <Box paddingTop={2} paddingBottom={2}>
                                 <TextInput
-                                    id="price"
-                                    name="price"
-                                    label="price"
+                                    id="phoneNumber"
+                                    name="phoneNumber"
+                                    label="Phone Number"
                                     error={
-                                        formik.touched.price &&
-                                        Boolean(formik.errors.price)
-                                            ? formik.errors.price
+                                        formik.touched.phoneNumber &&
+                                        Boolean(formik.errors.phoneNumber)
+                                            ? formik.errors.phoneNumber
                                             : ''
                                     }
-                                    type="number"
                                     required
                                     placeholder="Rental price"
-                                    value={formik.values.price}
-                                    onChange={formik.handleChange}
-                                    labelAction={
-                                        <Tooltip description="Content of the tooltip">
-                                            <button
-                                                aria-label="Information about the email"
-                                                style={{
-                                                    border: 'none',
-                                                    padding: 0,
-                                                    background: 'transparent',
-                                                }}
-                                            ></button>
-                                        </Tooltip>
-                                    }
-                                />
-                            </Box>
-                            <Box paddingTop={2} paddingBottom={2}>
-                                <TextInput
-                                    id="isbn"
-                                    name="isbn"
-                                    label="isbn"
-                                    error={
-                                        formik.touched.isbn &&
-                                        Boolean(formik.errors.isbn)
-                                            ? formik.errors.isbn
-                                            : ''
-                                    }
-                                    type="number"
-                                    required
-                                    placeholder="ISBN"
-                                    hint="Please introduce a 13 digit number that starts with 978"
-                                    value={formik.values.isbn}
+                                    value={formik.values.phoneNumber}
                                     onChange={formik.handleChange}
                                     labelAction={
                                         <Tooltip description="Content of the tooltip">
@@ -224,7 +190,7 @@ const Modal = (props) => {
                         }
                         endActions={
                             <>
-                                <Button form="book-form" type="submit">
+                                <Button form="user-form" type="submit">
                                     Finish
                                 </Button>
                             </>
@@ -233,7 +199,7 @@ const Modal = (props) => {
                 </ModalLayout>
             )}
         </>
-    )
-}
+    );
+};
 
-export default Modal
+export default AddUserModal;

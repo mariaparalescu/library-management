@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react';
 import {
     MainNav,
     NavSection,
@@ -7,14 +7,14 @@ import {
     NavBrand,
     NavUser,
     NavLink,
-} from '@strapi/design-system/MainNav'
-import { Divider, Box, Breadcrumbs, Crumb } from '@strapi/design-system'
-import { Write, Layer, Book, Archive, User, Dashboard } from '@strapi/icons'
-import { BaseHeaderLayout } from '@strapi/design-system/Layout'
+} from '@strapi/design-system/MainNav';
+import { Divider, Box, Breadcrumbs, Crumb } from '@strapi/design-system';
+import { Write, Layer, Book, Archive, User, Dashboard } from '@strapi/icons';
+import { BaseHeaderLayout } from '@strapi/design-system/Layout';
 
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom';
 const NavBar = () => {
-    const [condensed, setCondensed] = useState(false)
+    const [condensed, setCondensed] = useState(false);
     return (
         <Box
             background="neutral100"
@@ -70,7 +70,7 @@ const NavBar = () => {
                 <Outlet />
             </div>
         </Box>
-    )
-}
+    );
+};
 
-export default NavBar
+export default NavBar;

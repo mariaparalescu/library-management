@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react'
-import NavBar from './NavBar'
-import { ThemeProvider } from '@strapi/design-system/ThemeProvider'
-import { lightTheme } from '@strapi/design-system/themes'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import ManageBooks from '../pages/ManageBooks'
+import React, { Fragment } from 'react';
+import NavBar from './NavBar';
+import { ThemeProvider } from '@strapi/design-system/ThemeProvider';
+import { lightTheme } from '@strapi/design-system/themes';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ManageBooks from '../pages/ManageBooks';
+import UsersTable from './UsersTable';
 
 function App() {
     return (
@@ -27,12 +28,19 @@ function App() {
                             </ThemeProvider>
                         }
                     />
-                    <Route path="users" element={<div>users</div>} />
+                    <Route
+                        path="users"
+                        element={
+                            <ThemeProvider theme={lightTheme}>
+                                <UsersTable />
+                            </ThemeProvider>
+                        }
+                    />
                     <Route path="rental" element={<div>books</div>} />
                 </Route>
             </Routes>
         </BrowserRouter>
-    )
+    );
 }
 
-export default App
+export default App;

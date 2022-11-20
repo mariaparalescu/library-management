@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react';
 
-const DataContext = createContext({})
+const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
     const [data, setData] = useState({
@@ -18,20 +18,21 @@ export const DataProvider = ({ children }) => {
             {
                 name: 'Carrie',
                 surname: 'Bradshaw',
+                phoneNumber: '0723232323',
                 hasRentedBook: false,
-                startingDate: '',
-                hasToPay: '',
+                startingDate: '-',
+                hasToPay: '-',
             },
         ],
-    })
+    });
 
     return (
         <DataContext.Provider value={{ data, setData }}>
             {children}
         </DataContext.Provider>
-    )
-}
+    );
+};
 
 export const useData = () => {
-    return useContext(DataContext)
-}
+    return useContext(DataContext);
+};

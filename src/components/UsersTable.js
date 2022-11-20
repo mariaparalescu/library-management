@@ -16,25 +16,16 @@ import { BaseCheckbox } from '@strapi/design-system/BaseCheckbox';
 import { IconButton } from '@strapi/design-system/IconButton';
 import BooksModal from './BooksModal';
 import { useData } from '../contexts/DataProvider';
+import AddUserModal from './AddUserModal';
 
-const BooksTable = () => {
+const UsersTable = () => {
     const { data, setData } = useData();
     const ROW_COUNT = 6;
     const COL_COUNT = 10;
-    const entry = {
-        isbn: 9781234567891234,
-        title: 'Booky',
-        author: 'Lala',
-        price: '5',
-        copies: 1,
-        available: 1,
-    };
     const entries = [];
 
-    console.log('===', data.books.length, data);
-
-    for (let i = 0; i < data.books.length; i++) {
-        entries.push({ ...data.books[i], id: i });
+    for (let i = 0; i < data.users.length; i++) {
+        entries.push({ ...data.users[i], id: i });
     }
 
     return (
@@ -42,7 +33,7 @@ const BooksTable = () => {
             <Table
                 colCount={COL_COUNT}
                 rowCount={ROW_COUNT}
-                footer={<BooksModal />}
+                footer={<AddUserModal />}
             >
                 <Thead>
                     <Tr>
@@ -69,7 +60,7 @@ const BooksTable = () => {
                                 />
                             }
                         >
-                            <Typography variant="sigma">ISBN</Typography>
+                            <Typography variant="sigma">Name</Typography>
                         </Th>
                         <Th
                             action={
@@ -80,19 +71,23 @@ const BooksTable = () => {
                                 />
                             }
                         >
-                            <Typography variant="sigma">Title</Typography>
+                            <Typography variant="sigma">Surname</Typography>
                         </Th>
                         <Th>
-                            <Typography variant="sigma">Author</Typography>
+                            <Typography variant="sigma">
+                                Phone Number
+                            </Typography>
                         </Th>
                         <Th>
-                            <Typography variant="sigma">Price</Typography>
+                            <Typography variant="sigma">Has a book</Typography>
                         </Th>
                         <Th>
-                            <Typography variant="sigma">Copies</Typography>
+                            <Typography variant="sigma">
+                                Rental starting day
+                            </Typography>
                         </Th>
                         <Th>
-                            <Typography variant="sigma">Available</Typography>
+                            <Typography variant="sigma">Due to pay</Typography>
                         </Th>
                         <Th>
                             <Typography variant="sigma"></Typography>
@@ -114,32 +109,32 @@ const BooksTable = () => {
                             </Td>
                             <Td contenteditable="true">
                                 <Typography textColor="neutral800">
-                                    {entry.isbn}
+                                    {entry.name}
                                 </Typography>
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {entry.title}
+                                    {entry.surname}
                                 </Typography>
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {entry.author}
+                                    {entry.phoneNumber}
                                 </Typography>
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {`${entry.price} RON`}
+                                    {`${entry.hasRentedBook}`}
                                 </Typography>
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {entry.copies}
+                                    {entry.startingDate}
                                 </Typography>
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {entry.available}
+                                    {entry.hasToPay}
                                 </Typography>
                             </Td>
                             <Td>
@@ -169,4 +164,4 @@ const BooksTable = () => {
         </Box>
     );
 };
-export default BooksTable;
+export default UsersTable;
