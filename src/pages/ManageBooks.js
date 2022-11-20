@@ -1,13 +1,13 @@
-import React from "react";
-import BooksTable from "../components/BooksTable";
-import Modal from "../components/Modal";
+import React from 'react'
+import BooksTable from '../components/BooksTable'
+import Modal from '../components/Modal'
 
 const ManageBooks = () => {
-    return(
+    return (
         <>
             <BooksTable />
         </>
-    );
+    )
 }
 
-export default ManageBooks;
+export default ManageBooks
