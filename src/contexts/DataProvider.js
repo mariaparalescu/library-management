@@ -8,11 +8,11 @@ export const DataProvider = ({children}) => {
             isbn: 9781234567891234,
             title: 'Booky',
             author: 'Lala',
-            price: '6',
+            price: 6,
             copies: 1,
+            available: 1,
         }],
         users: [],
-        bookModalIsOpen: false,
     });
 
     return (

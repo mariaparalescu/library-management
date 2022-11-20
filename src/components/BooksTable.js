@@ -22,8 +22,11 @@ const BooksTable = () => {
             author: 'Lala',
             price: '5',
             copies: 1,
+            available: 1,
         };
         const entries = [];
+
+        console.log("===", data.books.length, data);
 
         for (let i = 0; i < data.books.length; i++) {
             entries.push({ ...data.books[i],
@@ -86,6 +89,9 @@ const BooksTable = () => {
                         </Td>
                         <Td>
                             <Typography textColor="neutral800">{entry.copies}</Typography>
+                        </Td>
+                        <Td>
+                            <Typography textColor="neutral800">{entry.available}</Typography>
                         </Td>
                         <Td>
                             <Flex>
