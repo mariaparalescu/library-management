@@ -55,6 +55,7 @@ const AddUserModal = (props) => {
                     hasRentedBook: false,
                     startingDate: '-',
                     hasToPay: '-',
+                    rentedBookIsbn: '',
                 };
                 setData({ ...data, users: [...data.users, newUser] });
                 setIsVisible((prev) => !prev);
@@ -82,7 +83,7 @@ const AddUserModal = (props) => {
                             as="h2"
                             id="title"
                         >
-                            Add a new book
+                            Add a new user
                         </Typography>
                     </ModalHeader>
                     <ModalBody>
@@ -99,7 +100,7 @@ const AddUserModal = (props) => {
                                             ? formik.errors.name
                                             : ''
                                     }
-                                    placeholder="Book title"
+                                    placeholder="Name"
                                     required
                                     hint="Example: Romeo and Juliet"
                                     value={formik.values.name}
@@ -130,7 +131,7 @@ const AddUserModal = (props) => {
                                             ? formik.errors.surname
                                             : ''
                                     }
-                                    placeholder="Book author"
+                                    placeholder="Surname"
                                     hint="Example: William Shakespeare"
                                     value={formik.values.surname}
                                     onChange={formik.handleChange}
@@ -160,7 +161,7 @@ const AddUserModal = (props) => {
                                             : ''
                                     }
                                     required
-                                    placeholder="Rental price"
+                                    placeholder="Phone number"
                                     value={formik.values.phoneNumber}
                                     onChange={formik.handleChange}
                                     labelAction={

@@ -9,7 +9,7 @@ import {
     TFooter,
 } from '@strapi/design-system/Table';
 import { Box } from '@strapi/design-system';
-import { Plus, CarretDown, Pencil, Trash } from '@strapi/icons';
+import { Plus, CarretDown, Pencil, Trash, Minus, Check } from '@strapi/icons';
 import { Typography } from '@strapi/design-system/Typography';
 import { Flex } from '@strapi/design-system/Flex';
 import { BaseCheckbox } from '@strapi/design-system/BaseCheckbox';
@@ -17,6 +17,7 @@ import { IconButton } from '@strapi/design-system/IconButton';
 import BooksModal from './BooksModal';
 import { useData } from '../contexts/DataProvider';
 import AddUserModal from './AddUserModal';
+import RentalModal from './RentalModal';
 
 const UsersTable = () => {
     const { data, setData } = useData();
@@ -90,6 +91,12 @@ const UsersTable = () => {
                             <Typography variant="sigma">Due to pay</Typography>
                         </Th>
                         <Th>
+                            <Typography variant="sigma">Rent</Typography>
+                        </Th>
+                        <Th>
+                            <Typography variant="sigma">Return</Typography>
+                        </Th>
+                        <Th>
                             <Typography variant="sigma"></Typography>
                         </Th>
                     </Tr>
@@ -138,6 +145,17 @@ const UsersTable = () => {
                                 </Typography>
                             </Td>
                             <Td>
+                                <RentalModal user={entry} />
+                            </Td>
+                            <Td>
+                                <IconButton
+                                    onClick={() => console.log('edit')}
+                                    label="Return the book"
+                                    noBorder
+                                    icon={<Check />}
+                                />
+                            </Td>
+                            <Td>
                                 <Flex>
                                     <IconButton
                                         onClick={() => console.log('edit')}
@@ -147,9 +165,7 @@ const UsersTable = () => {
                                     />
                                     <Box paddingLeft={1}>
                                         <IconButton
-                                            onClick={() =>
-                                                console.log('delete')
-                                            }
+                                            onClick={(e) => e.preventDefault()}
                                             label="Delete"
                                             noBorder
                                             icon={<Trash />}

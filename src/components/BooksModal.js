@@ -18,6 +18,11 @@ const BooksModal = (props) => {
     const [isVisible, setIsVisible] = useState(false);
     const { data, setData } = useData();
 
+    console.log(
+        '====isbns',
+        data.books.map((book) => book.isbn)
+    );
+
     const BookFormSchema = Yup.object().shape({
         title: Yup.string()
             .min(2, 'The title should be at least 2 characters long')
@@ -44,6 +49,10 @@ const BooksModal = (props) => {
                 /978[0-9]{10}/,
                 'The number should start with 978 and should have the length 13'
             )
+            // .notOneOf(
+            //     data?.books.map((book) => book.isbn),
+            //     "You can't have 2 books with the same isbn"
+            // )
             .required('Required'),
     });
 
