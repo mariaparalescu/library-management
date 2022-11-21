@@ -22,6 +22,7 @@ export const DataProvider = ({ children }) => {
                 hasRentedBook: false,
                 startingDate: '-',
                 hasToPay: '-',
+                rentedBookIsbn: '',
             },
         ],
     });
