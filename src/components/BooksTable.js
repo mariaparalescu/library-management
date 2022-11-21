@@ -44,7 +44,7 @@ const BooksTable = () => {
         const bookIndex = data.books.findIndex((book) => book.isbn === isbn);
         const booksCopy = [...data.books];
         if (booksCopy[bookIndex].available === booksCopy[bookIndex].copies) {
-            booksCopy.pop(bookIndex);
+            booksCopy.splice(bookIndex, 1);
         }
         return booksCopy;
     };
