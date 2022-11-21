@@ -18,11 +18,6 @@ const BooksModal = (props) => {
     const [isVisible, setIsVisible] = useState(false);
     const { data, setData } = useData();
 
-    console.log(
-        '====isbns',
-        data.books.map((book) => book.isbn)
-    );
-
     const BookFormSchema = Yup.object().shape({
         title: Yup.string()
             .min(2, 'The title should be at least 2 characters long')
@@ -66,7 +61,6 @@ const BooksModal = (props) => {
         validationSchema: BookFormSchema,
         onSubmit: (values) => {
             if (formik.isValid) {
-                console.log(data);
                 const newBook = { ...values, copies: 1, available: 1 };
                 setData({ ...data, books: [...data.books, newBook] });
                 setIsVisible((prev) => !prev);

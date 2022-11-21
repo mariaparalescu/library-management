@@ -25,6 +25,42 @@ const UsersTable = () => {
     const COL_COUNT = 10;
     const entries = [];
 
+    const updateUsers = (phoneNumber) => {
+        const userIndex = data.users.findIndex(
+            (user) => user.phoneNumber === phoneNumber
+        );
+        const usersCopy = [...data.users];
+        if (usersCopy[userIndex].hasRentedBook) {
+            usersCopy[userIndex].startingDate = '-';
+            usersCopy[userIndex].hasRentedBook = false;
+            usersCopy[userIndex].rentedBookIsbn = '';
+        }
+        return usersCopy;
+    };
+
+    const updateBooksAvailability = (phoneNumber) => {
+        const userIndex = data.users.findIndex(
+            (user) => user.phoneNumber === phoneNumber
+        );
+        const booksCopy = [...data.books];
+        if (data.users[userIndex].hasRentedBook) {
+            const bookIndex = data.books.findIndex(
+                (book) =>
+                    `${book.isbn}` === data.users[userIndex].rentedBookIsbn
+            );
+            booksCopy[bookIndex].available++;
+        }
+        return booksCopy;
+    };
+
+    const returnBook = (user) => {
+        setData({
+            ...data,
+            books: updateBooksAvailability(user.phoneNumber),
+            users: updateUsers(user.phoneNumber),
+        });
+    };
+
     for (let i = 0; i < data.users.length; i++) {
         entries.push({ ...data.users[i], id: i });
     }
@@ -131,12 +167,12 @@ const UsersTable = () => {
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {`${entry.hasRentedBook}`}
+                                    {entry.hasRentedBook ? 'Yes' : 'No'}
                                 </Typography>
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {entry.startingDate}
+                                    {JSON.stringify(entry.startingDate)}
                                 </Typography>
                             </Td>
                             <Td>
@@ -149,7 +185,10 @@ const UsersTable = () => {
                             </Td>
                             <Td>
                                 <IconButton
-                                    onClick={() => console.log('edit')}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        returnBook(entry);
+                                    }}
                                     label="Return the book"
                                     noBorder
                                     icon={<Check />}

@@ -13,6 +13,14 @@ export const DataProvider = ({ children }) => {
                 copies: 1,
                 available: 1,
             },
+            {
+                isbn: 9783161484101,
+                title: 'Paine si vin',
+                author: 'Charles Bukovskyite',
+                price: 6,
+                copies: 1,
+                available: 1,
+            },
         ],
         users: [
             {
@@ -21,7 +29,16 @@ export const DataProvider = ({ children }) => {
                 phoneNumber: '0723232323',
                 hasRentedBook: false,
                 startingDate: '-',
-                hasToPay: '-',
+                hasToPay: 0,
+                rentedBookIsbn: '',
+            },
+            {
+                name: 'Charlotte',
+                surname: 'York',
+                phoneNumber: '0723232321',
+                hasRentedBook: false,
+                startingDate: '-',
+                hasToPay: 0,
                 rentedBookIsbn: '',
             },
         ],

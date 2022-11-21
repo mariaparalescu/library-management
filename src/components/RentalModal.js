@@ -29,6 +29,28 @@ const RentalModal = (props) => {
 
     let today = new Date();
 
+    const updateUsers = (phoneNumber) => {
+        const userIndex = data.users.findIndex(
+            (user) => user.phoneNumber === phoneNumber
+        );
+        const usersCopy = [...data.users];
+        if (!usersCopy[userIndex].hasRentedBook) {
+            usersCopy[userIndex].startingDate = formik.values.date;
+            usersCopy[userIndex].hasRentedBook = true;
+            usersCopy[userIndex].rentedBookIsbn = formik.values.isbn;
+        }
+        return usersCopy;
+    };
+
+    const updateBooksAvailability = () => {
+        const bookIndex = data.books.findIndex(
+            (book) => `${book.isbn}` === formik.values.isbn
+        );
+        const booksCopy = [...data.books];
+        booksCopy[bookIndex].available--;
+        return booksCopy;
+    };
+
     const RentalFormSchema = Yup.object().shape({
         isbn: Yup.string().required('Required'),
         date: Yup.date()
@@ -44,14 +66,11 @@ const RentalModal = (props) => {
         validationSchema: RentalFormSchema,
         onSubmit: (values) => {
             if (formik.isValid) {
-                const newUser = {
-                    ...values,
-                    hasRentedBook: false,
-                    startingDate: '-',
-                    hasToPay: '-',
-                    rentedBookIsbn: '',
-                };
-                setData({ ...data, users: [...data.users, newUser] });
+                setData({
+                    ...data,
+                    books: updateBooksAvailability(),
+                    users: updateUsers(props.user.phoneNumber),
+                });
                 setIsVisible((prev) => !prev);
             }
         },
@@ -59,7 +78,6 @@ const RentalModal = (props) => {
 
     return (
         <>
-            {console.log(formik)}
             <IconButton
                 onClick={() => setIsVisible((prev) => !prev)}
                 label="Rent a book"
@@ -82,64 +100,70 @@ const RentalModal = (props) => {
                         </Typography>
                     </ModalHeader>
                     <ModalBody>
-                        <form id="rental-form" onSubmit={formik.handleSubmit}>
-                            <Stack paddingBottom={6} spacing={11}>
-                                {console.log(formik)}
-                                <Select
-                                    id="isbn"
-                                    name="isbn"
-                                    label="Available books"
-                                    required
-                                    placeholder="Please select a book"
-                                    hint=""
-                                    onClear={() => setValue(undefined)}
-                                    clearLabel="Clear"
-                                    error={formik.errors.isbn}
-                                    value={formik.values.isbn}
-                                    onChange={(e) =>
-                                        formik.setFieldValue('isbn', e)
-                                    }
-                                    disabled={disabled}
-                                    startIcon={<Plus />}
-                                >
-                                    {data.books.map((book) => {
-                                        if (book.available > 0) {
-                                            return (
-                                                <Option
-                                                    key={book.isbn}
-                                                    value={`${book.isbn}`}
-                                                >
-                                                    {book.title} - {book.author}
-                                                </Option>
-                                            );
+                        {props.user.hasRentedBook ? (
+                            <div> A user can rent one book at a time</div>
+                        ) : (
+                            <form
+                                id="rental-form"
+                                onSubmit={formik.handleSubmit}
+                            >
+                                <Stack paddingBottom={6} spacing={11}>
+                                    <Select
+                                        id="isbn"
+                                        name="isbn"
+                                        label="Available books"
+                                        required
+                                        placeholder="Please select a book"
+                                        hint=""
+                                        onClear={() => setValue(undefined)}
+                                        clearLabel="Clear"
+                                        error={formik.errors.isbn}
+                                        value={formik.values.isbn}
+                                        onChange={(e) =>
+                                            formik.setFieldValue('isbn', e)
                                         }
-                                    })}
-                                </Select>
-                            </Stack>
-                            <DatePicker
-                                onChange={(e) =>
-                                    formik.setFieldValue('date', e)
-                                }
-                                selectedDate={date}
-                                id="date"
-                                name="date"
-                                label="Date"
-                                value={formik.values.date}
-                                minDate={today}
-                                error={
-                                    formik.touched.date &&
-                                    Boolean(formik.errors.date)
-                                        ? formik.errors.date
-                                        : ''
-                                }
-                                clearLabel={'Clear the datepicker'}
-                                onClear={() => setDate(undefined)}
-                                selectedDateLabel={(formattedDate) =>
-                                    `Date picker, current is ${formattedDate}`
-                                }
-                            />
-                            {console.log('===date', date)}
-                        </form>
+                                        disabled={disabled}
+                                        startIcon={<Plus />}
+                                    >
+                                        {data.books.map((book) => {
+                                            if (book.available > 0) {
+                                                return (
+                                                    <Option
+                                                        key={book.isbn}
+                                                        value={`${book.isbn}`}
+                                                    >
+                                                        {book.title} -{' '}
+                                                        {book.author}
+                                                    </Option>
+                                                );
+                                            }
+                                        })}
+                                    </Select>
+                                </Stack>
+                                <DatePicker
+                                    onChange={(e) =>
+                                        formik.setFieldValue('date', e)
+                                    }
+                                    selectedDate={date}
+                                    id="date"
+                                    name="date"
+                                    label="Date"
+                                    value={formik.values.date}
+                                    minDate={today}
+                                    error={
+                                        formik.touched.date &&
+                                        Boolean(formik.errors.date)
+                                            ? formik.errors.date
+                                            : ''
+                                    }
+                                    clearLabel={'Clear the datepicker'}
+                                    onClear={() => setDate(undefined)}
+                                    selectedDateLabel={(formattedDate) =>
+                                        `Date picker, current is ${formattedDate}`
+                                    }
+                                />
+                            </form>
+                        )}
                     </ModalBody>
                     <ModalFooter
                         startActions={
