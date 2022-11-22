@@ -4,7 +4,7 @@ import { ThemeProvider } from '@strapi/design-system/ThemeProvider';
 import { lightTheme } from '@strapi/design-system/themes';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ManageBooks from '../pages/ManageBooks';
-import UsersTable from './UsersTable';
+import ManageUsers from '../pages/ManageUsers';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<NavBar />}>
             <Route index element={<ManageBooks />} />
-            <Route path="users" element={<UsersTable />} />
+            <Route path="users" element={<ManageUsers />} />
           </Route>
         </Routes>
       </ThemeProvider>

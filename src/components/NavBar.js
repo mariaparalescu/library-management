@@ -10,7 +10,6 @@ import {
 } from '@strapi/design-system/MainNav';
 import { Divider, Box } from '@strapi/design-system';
 import { Write, Book, User } from '@strapi/icons';
-import { BaseHeaderLayout } from '@strapi/design-system/Layout';
 
 import { Outlet } from 'react-router-dom';
 
@@ -53,7 +52,6 @@ const NavBar = () => {
         </NavCondense>
       </MainNav>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <BaseHeaderLayout padding={2} title="Media Library" as="h2" />
         <Outlet />
       </div>
     </Box>
