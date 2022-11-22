@@ -74,9 +74,6 @@ const BooksTable = () => {
             >
                 <Thead>
                     <Tr>
-                        <Th>
-                            <BaseCheckbox aria-label="Select all entries" />
-                        </Th>
                         <Th
                             action={
                                 <IconButton
@@ -130,11 +127,6 @@ const BooksTable = () => {
                 <Tbody>
                     {entries.map((entry) => (
                         <Tr key={entry.id}>
-                            <Td>
-                                <BaseCheckbox
-                                    aria-label={`Select ${entry.contact}`}
-                                />
-                            </Td>
                             <Td contenteditable="true">
                                 <Typography textColor="neutral800">
                                     {entry.id}
@@ -195,12 +187,6 @@ const BooksTable = () => {
                             </Td>
                             <Td>
                                 <Flex>
-                                    <IconButton
-                                        onClick={() => console.log('edit')}
-                                        label="Edit"
-                                        noBorder
-                                        icon={<Pencil />}
-                                    />
                                     <Box paddingLeft={1}>
                                         <IconButton
                                             onClick={(e) => {

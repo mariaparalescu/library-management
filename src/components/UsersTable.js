@@ -34,6 +34,8 @@ const UsersTable = () => {
             usersCopy[userIndex].startingDate = '-';
             usersCopy[userIndex].hasRentedBook = false;
             usersCopy[userIndex].rentedBookIsbn = '';
+            usersCopy[userIndex].rentedBookTitle = '';
+            usersCopy[userIndex].rentedBookAuthor = '';
         }
         return usersCopy;
     };
@@ -53,12 +55,27 @@ const UsersTable = () => {
         return booksCopy;
     };
 
+    const deleteUserValidation = (phoneNumber) => {
+        const userIndex = data.users.findIndex(
+            (user) => user.phoneNumber === phoneNumber
+        );
+        const usersCopy = [...data.users];
+        if (!usersCopy[userIndex].hasRentedBook) {
+            usersCopy.splice(userIndex, 1);
+        }
+        return usersCopy;
+    };
+
     const returnBook = (user) => {
         setData({
             ...data,
             books: updateBooksAvailability(user.phoneNumber),
             users: updateUsers(user.phoneNumber),
         });
+    };
+
+    const deleteUser = (phoneNumber) => {
+        setData({ ...data, users: deleteUserValidation(phoneNumber) });
     };
 
     for (let i = 0; i < data.users.length; i++) {
@@ -74,9 +91,6 @@ const UsersTable = () => {
             >
                 <Thead>
                     <Tr>
-                        <Th>
-                            <BaseCheckbox aria-label="Select all entries" />
-                        </Th>
                         <Th
                             action={
                                 <IconButton
@@ -116,11 +130,11 @@ const UsersTable = () => {
                             </Typography>
                         </Th>
                         <Th>
-                            <Typography variant="sigma">Has a book</Typography>
+                            <Typography variant="sigma">Rented Book</Typography>
                         </Th>
                         <Th>
                             <Typography variant="sigma">
-                                Rental starting day
+                                Rental starting date
                             </Typography>
                         </Th>
                         <Th>
@@ -140,11 +154,6 @@ const UsersTable = () => {
                 <Tbody>
                     {entries.map((entry) => (
                         <Tr key={entry.id}>
-                            <Td>
-                                <BaseCheckbox
-                                    aria-label={`Select ${entry.contact}`}
-                                />
-                            </Td>
                             <Td contenteditable="true">
                                 <Typography textColor="neutral800">
                                     {entry.id}
@@ -167,7 +176,9 @@ const UsersTable = () => {
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {entry.hasRentedBook ? 'Yes' : 'No'}
+                                    {entry.hasRentedBook
+                                        ? `${entry.rentedBookTitle} - ${entry.rentedBookAuthor}`
+                                        : 'None'}
                                 </Typography>
                             </Td>
                             <Td>
@@ -196,15 +207,12 @@ const UsersTable = () => {
                             </Td>
                             <Td>
                                 <Flex>
-                                    <IconButton
-                                        onClick={() => console.log('edit')}
-                                        label="Edit"
-                                        noBorder
-                                        icon={<Pencil />}
-                                    />
                                     <Box paddingLeft={1}>
                                         <IconButton
-                                            onClick={(e) => e.preventDefault()}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                deleteUser(entry.phoneNumber);
+                                            }}
                                             label="Delete"
                                             noBorder
                                             icon={<Trash />}

@@ -54,7 +54,7 @@ const AddUserModal = (props) => {
                     ...values,
                     hasRentedBook: false,
                     startingDate: '-',
-                    hasToPay: '-',
+                    hasToPay: 0,
                     rentedBookIsbn: '',
                 };
                 setData({ ...data, users: [...data.users, newUser] });

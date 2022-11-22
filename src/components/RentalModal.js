@@ -29,23 +29,33 @@ const RentalModal = (props) => {
 
     let today = new Date();
 
+    const findBookIndexByIsbn = () => {
+        const bookIndex = data.books.findIndex(
+            (book) => `${book.isbn}` === formik.values.isbn
+        );
+        return bookIndex;
+    };
+
     const updateUsers = (phoneNumber) => {
         const userIndex = data.users.findIndex(
             (user) => user.phoneNumber === phoneNumber
         );
+        const bookIndex = findBookIndexByIsbn();
+
         const usersCopy = [...data.users];
         if (!usersCopy[userIndex].hasRentedBook) {
             usersCopy[userIndex].startingDate = formik.values.date;
             usersCopy[userIndex].hasRentedBook = true;
             usersCopy[userIndex].rentedBookIsbn = formik.values.isbn;
+            usersCopy[userIndex].rentedBookTitle = data.books[bookIndex].title;
+            usersCopy[userIndex].rentedBookAuthor =
+                data.books[bookIndex].author;
         }
         return usersCopy;
     };
 
     const updateBooksAvailability = () => {
-        const bookIndex = data.books.findIndex(
-            (book) => `${book.isbn}` === formik.values.isbn
-        );
+        const bookIndex = findBookIndexByIsbn();
         const booksCopy = [...data.books];
         booksCopy[bookIndex].available--;
         return booksCopy;

@@ -31,6 +31,8 @@ export const DataProvider = ({ children }) => {
                 startingDate: '-',
                 hasToPay: 0,
                 rentedBookIsbn: '',
+                rentedBookTitle: '',
+                rentedBookAuthor: '',
             },
             {
                 name: 'Charlotte',
@@ -40,6 +42,8 @@ export const DataProvider = ({ children }) => {
                 startingDate: '-',
                 hasToPay: 0,
                 rentedBookIsbn: '',
+                rentedBookTitle: '',
+                rentedBookAuthor: '',
             },
         ],
     });
