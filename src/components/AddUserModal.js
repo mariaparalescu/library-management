@@ -79,7 +79,7 @@ const AddUserModal = (props) => {
                   }
                   placeholder="Name"
                   required
-                  hint="Example: Romeo and Juliet"
+                  hint="Example: Jon"
                   value={formik.values.name}
                   onChange={formik.handleChange}
                   labelAction={
@@ -108,7 +108,7 @@ const AddUserModal = (props) => {
                       : ''
                   }
                   placeholder="Surname"
-                  hint="Example: William Shakespeare"
+                  hint="Example: Smith"
                   value={formik.values.surname}
                   onChange={formik.handleChange}
                   labelAction={

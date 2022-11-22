@@ -34,7 +34,7 @@ const NavBar = () => {
         <Divider />
         <NavSections>
           <NavSection label="Categories">
-            <NavLink to="/books" icon={<Book />}>
+            <NavLink to="/" icon={<Book />}>
               Books
             </NavLink>
             <NavLink to="/users" icon={<User />}>

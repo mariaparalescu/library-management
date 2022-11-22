@@ -5,17 +5,16 @@ import {
   ModalHeader,
   ModalFooter,
 } from '@strapi/design-system/ModalLayout';
-import { Button, Typography, DatePicker, Box } from '@strapi/design-system';
+import { Button, Typography, Box } from '@strapi/design-system';
 import { Plus } from '@strapi/icons';
 import { TFooter } from '@strapi/design-system/Table';
 import { useData } from '../contexts/DataProvider';
-import { Formik, Form, Field, useFormik } from 'formik';
-import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import { TextInput } from '@strapi/design-system/TextInput';
 import { Tooltip } from '@strapi/design-system/Tooltip';
 import BookFormSchema from '../utils/validations/booksValidationSchema';
 
-const BooksModal = (props) => {
+const AddBookModal = (props) => {
   const [isVisible, setIsVisible] = useState(false);
   const { data, addBook } = useData();
 
@@ -66,7 +65,7 @@ const BooksModal = (props) => {
                 <TextInput
                   id="title"
                   name="title"
-                  label="title"
+                  label="Title"
                   error={
                     formik.touched.title && Boolean(formik.errors.title)
                       ? formik.errors.title
@@ -95,7 +94,7 @@ const BooksModal = (props) => {
                 <TextInput
                   id="author"
                   name="author"
-                  label="author"
+                  label="Author"
                   error={
                     formik.touched.author && Boolean(formik.errors.author)
                       ? formik.errors.author
@@ -123,7 +122,7 @@ const BooksModal = (props) => {
                 <TextInput
                   id="price"
                   name="price"
-                  label="price"
+                  label="Price"
                   error={
                     formik.touched.price && Boolean(formik.errors.price)
                       ? formik.errors.price
@@ -152,7 +151,7 @@ const BooksModal = (props) => {
                 <TextInput
                   id="isbn"
                   name="isbn"
-                  label="isbn"
+                  label="ISBN"
                   error={
                     formik.touched.isbn && Boolean(formik.errors.isbn)
                       ? formik.errors.isbn
@@ -205,4 +204,4 @@ const BooksModal = (props) => {
   );
 };
 
-export default BooksModal;
+export default AddBookModal;

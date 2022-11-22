@@ -5,7 +5,7 @@ import { Plus, Trash, Minus } from '@strapi/icons';
 import { Typography } from '@strapi/design-system/Typography';
 import { Flex } from '@strapi/design-system/Flex';
 import { IconButton } from '@strapi/design-system/IconButton';
-import BooksModal from './BooksModal';
+import AddBookModal from './AddBookModal';
 import { useData } from '../contexts/DataProvider';
 
 const BooksTable = () => {
@@ -25,7 +25,11 @@ const BooksTable = () => {
 
   return (
     <Box padding={8} background="neutral100">
-      <Table colCount={COL_COUNT} rowCount={ROW_COUNT} footer={<BooksModal />}>
+      <Table
+        colCount={COL_COUNT}
+        rowCount={ROW_COUNT}
+        footer={<AddBookModal />}
+      >
         <Thead>
           <Tr>
             {HEADERS.map((header) => (

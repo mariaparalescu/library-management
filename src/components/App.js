@@ -12,7 +12,7 @@ function App() {
       <ThemeProvider theme={lightTheme}>
         <Routes>
           <Route path="/" element={<NavBar />}>
-            <Route index path="books" element={<ManageBooks />} />
+            <Route index element={<ManageBooks />} />
             <Route path="users" element={<UsersTable />} />
           </Route>
         </Routes>
