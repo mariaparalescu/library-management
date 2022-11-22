@@ -16,7 +16,7 @@ import UserValidationSchema from '../utils/validations/userValidationSchema';
 
 const AddUserModal = (props) => {
   const [isVisible, setIsVisible] = useState(false);
-  const { data, setData } = useData();
+  const { data, addUser } = useData();
 
   const phoneNumberIsUnique = (phoneNumber) => {
     const phoneNumberArr = data.users.map((user) => user.phoneNumber);
@@ -39,7 +39,7 @@ const AddUserModal = (props) => {
           hasToPay: 0,
           rentedBookIsbn: '',
         };
-        setData({ ...data, users: [...data.users, newUser] });
+        addUser(newUser);
         setIsVisible((prev) => !prev);
       }
     },

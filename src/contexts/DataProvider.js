@@ -1,58 +1,28 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useReducer, useState } from 'react';
+import { actions, initialState } from './actions';
+import { reducer } from './reducers';
 
 const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
-  const [data, setData] = useState({
-    books: [
-      {
-        isbn: 9783161484100,
-        title: 'Booky',
-        author: 'Lala',
-        price: 6,
-        copies: 1,
-        available: 1,
-      },
-      {
-        isbn: 9783161484101,
-        title: 'Paine si vin',
-        author: 'Charles Bukovskyite',
-        price: 6,
-        copies: 1,
-        available: 1,
-      },
-    ],
-    users: [
-      {
-        name: 'Carrie',
-        surname: 'Bradshaw',
-        phoneNumber: '0723232323',
-        hasRentedBook: false,
-        startingDate: '-',
-        hasToPay: 0,
-        rentedBookIsbn: '',
-        rentedBookTitle: '',
-        rentedBookAuthor: '',
-      },
-      {
-        name: 'Charlotte',
-        surname: 'York',
-        phoneNumber: '0723232321',
-        hasRentedBook: false,
-        startingDate: '-',
-        hasToPay: 0,
-        rentedBookIsbn: '',
-        rentedBookTitle: '',
-        rentedBookAuthor: '',
-      },
-    ],
-  });
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  return (
-    <DataContext.Provider value={{ data, setData }}>
-      {children}
-    </DataContext.Provider>
-  );
+  const value = {
+    data: state,
+    removeBook: (isbn) => dispatch({ type: actions.REMOVE_BOOK, isbn }),
+    addBook: (book) => dispatch({ type: actions.ADD_BOOK, book }),
+    increaseBook: (isbn) =>
+      dispatch({ type: actions.INCREASE_BOOK_COPIES, isbn }),
+    decreaseBook: (isbn) =>
+      dispatch({ type: actions.DECREASE_BOOK_COPIES, isbn }),
+    addUser: (user) => dispatch({ type: actions.ADD_USER, user }),
+    removeUser: (phoneNumber) =>
+      dispatch({ type: actions.REMOVE_USER, phoneNumber }),
+    rentBook: (phoneNumber) =>
+      dispatch({ type: actions.RENT_BOOK, phoneNumber }),
+  };
+
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };
 
 export const useData = () => {

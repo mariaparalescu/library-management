@@ -13,6 +13,7 @@ import * as Yup from 'yup';
 import { IconButton } from '@strapi/design-system/IconButton';
 import { Select, Option } from '@strapi/design-system/Select';
 import { Stack } from '@strapi/design-system/Stack';
+import { RentalFormSchema } from '../utils/validations/rentValidationSchema';
 
 const RentalModal = (props) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -54,13 +55,6 @@ const RentalModal = (props) => {
     booksCopy[bookIndex].available--;
     return booksCopy;
   };
-
-  const RentalFormSchema = Yup.object().shape({
-    isbn: Yup.string().required('Required'),
-    date: Yup.date()
-      .min(today, "The rental date can't be in the past")
-      .required('Required'),
-  });
 
   const formik = useFormik({
     initialValues: {

@@ -10,7 +10,7 @@ import AddUserModal from './AddUserModal';
 import RentalModal from './RentalModal';
 
 const UsersTable = () => {
-  const { data, setData } = useData();
+  const { data, setData, removeUser } = useData();
   const ROW_COUNT = 6;
   const COL_COUNT = 10;
   const entries = [];
@@ -75,27 +75,12 @@ const UsersTable = () => {
     return booksCopy;
   };
 
-  const deleteUserValidation = (phoneNumber) => {
-    const userIndex = data.users.findIndex(
-      (user) => user.phoneNumber === phoneNumber
-    );
-    const usersCopy = [...data.users];
-    if (!usersCopy[userIndex].hasRentedBook) {
-      usersCopy.splice(userIndex, 1);
-    }
-    return usersCopy;
-  };
-
   const returnBook = (user) => {
     setData({
       ...data,
       books: updateBooksAvailability(user.phoneNumber),
       users: updateUsersOnReturn(user.phoneNumber),
     });
-  };
-
-  const deleteUser = (phoneNumber) => {
-    setData({ ...data, users: deleteUserValidation(phoneNumber) });
   };
 
   for (let i = 0; i < data.users.length; i++) {
@@ -112,7 +97,7 @@ const UsersTable = () => {
         <Thead>
           <Tr>
             {HEADERS.map((header) => (
-              <Th>
+              <Th key={header}>
                 <Typography variant="sigma"> {header}</Typography>
               </Th>
             ))}
@@ -173,9 +158,7 @@ const UsersTable = () => {
                 <Flex>
                   <Box paddingLeft={1}>
                     <IconButton
-                      onClick={() => {
-                        deleteUser(entry.phoneNumber);
-                      }}
+                      onClick={() => removeUser(entry.phoneNumber)}
                       label="Delete"
                       noBorder
                       icon={<Trash />}

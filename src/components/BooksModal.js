@@ -17,7 +17,7 @@ import BookFormSchema from '../utils/validations/booksValidationSchema';
 
 const BooksModal = (props) => {
   const [isVisible, setIsVisible] = useState(false);
-  const { data, setData } = useData();
+  const { data, addBook } = useData();
 
   const isbnIsUnique = (isbn) => {
     const isbnArr = data.books.map((book) => book.isbn);
@@ -34,8 +34,7 @@ const BooksModal = (props) => {
     validationSchema: BookFormSchema,
     onSubmit: (values) => {
       if (formik.isValid && isbnIsUnique(formik.values.isbn)) {
-        const newBook = { ...values, copies: 1, available: 1 };
-        setData({ ...data, books: [...data.books, newBook] });
+        addBook({ ...values, copies: 1, available: 1 });
         setIsVisible((prev) => !prev);
       }
     },

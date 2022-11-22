@@ -9,52 +9,9 @@ import BooksModal from './BooksModal';
 import { useData } from '../contexts/DataProvider';
 
 const BooksTable = () => {
-  const { data, setData } = useData();
+  const { data, removeBook, increaseBook, decreaseBook } = useData();
   const ROW_COUNT = 6;
   const COL_COUNT = 10;
-  const entries = [];
-
-  const increaseCopies = (isbn) => {
-    const bookIndex = data.books.findIndex((book) => book.isbn === isbn);
-    const booksCopy = [...data.books];
-    booksCopy[bookIndex].copies++;
-    booksCopy[bookIndex].available++;
-    return booksCopy;
-  };
-  const decreaseCopies = (isbn) => {
-    const bookIndex = data.books.findIndex((book) => book.isbn === isbn);
-    const booksCopy = [...data.books];
-    if (booksCopy[bookIndex].available && booksCopy[bookIndex].copies > 0) {
-      booksCopy[bookIndex].available--;
-      booksCopy[bookIndex].copies--;
-    }
-    return booksCopy;
-  };
-
-  const deleteBookValidation = (isbn) => {
-    const bookIndex = data.books.findIndex((book) => book.isbn === isbn);
-    const booksCopy = [...data.books];
-    if (booksCopy[bookIndex].available === booksCopy[bookIndex].copies) {
-      booksCopy.splice(bookIndex, 1);
-    }
-    return booksCopy;
-  };
-
-  const addBookCopy = (isbn) => {
-    setData({ ...data, books: increaseCopies(isbn) });
-  };
-
-  const removeBookCopy = (isbn) => {
-    setData({ ...data, books: decreaseCopies(isbn) });
-  };
-
-  const deleteBook = (isbn) => {
-    setData({ ...data, books: deleteBookValidation(isbn) });
-  };
-
-  for (let i = 0; i < data.books.length; i++) {
-    entries.push({ ...data.books[i], id: i });
-  }
 
   return (
     <Box padding={8} background="neutral100">
@@ -88,10 +45,10 @@ const BooksTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {entries.map((entry) => (
-            <Tr key={entry.id}>
+          {data?.books?.map((entry, index) => (
+            <Tr key={index}>
               <Td contenteditable="true">
-                <Typography textColor="neutral800">{entry.id}</Typography>
+                <Typography textColor="neutral800">{index}</Typography>
               </Td>
               <Td contenteditable="true">
                 <Typography textColor="neutral800">{entry.isbn}</Typography>
@@ -109,10 +66,7 @@ const BooksTable = () => {
               </Td>
               <Td style={{ display: 'flex', alignItem: 'center' }}>
                 <IconButton
-                  onClick={(e) => {
-                    e.preventDefault();
-                    removeBookCopy(entry.isbn);
-                  }}
+                  onClick={() => decreaseBook(entry.isbn)}
                   label="Remove a copy"
                   noBorder
                   icon={<Minus />}
@@ -121,10 +75,7 @@ const BooksTable = () => {
                   {entry.copies}
                 </Typography>
                 <IconButton
-                  onClick={(e) => {
-                    e.preventDefault();
-                    addBookCopy(entry.isbn);
-                  }}
+                  onClick={() => increaseBook(entry.isbn)}
                   label="Add a copy"
                   noBorder
                   icon={<Plus />}
@@ -139,10 +90,7 @@ const BooksTable = () => {
                 <Flex>
                   <Box paddingLeft={1}>
                     <IconButton
-                      onClick={(e) => {
-                        e.preventDefault();
-                        deleteBook(entry.isbn);
-                      }}
+                      onClick={() => removeBook(entry.isbn)}
                       label="Delete"
                       noBorder
                       icon={<Trash />}
