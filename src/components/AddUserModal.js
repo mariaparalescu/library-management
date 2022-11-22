@@ -1,218 +1,184 @@
 import React, { useState } from 'react';
 import {
-    ModalLayout,
-    ModalBody,
-    ModalHeader,
-    ModalFooter,
+  ModalLayout,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
 } from '@strapi/design-system/ModalLayout';
-import { Button, Typography, DatePicker, Box } from '@strapi/design-system';
+import { Button, Typography, Box } from '@strapi/design-system';
 import { Plus } from '@strapi/icons';
 import { TFooter } from '@strapi/design-system/Table';
 import { useData } from '../contexts/DataProvider';
-import { Formik, Form, Field, useFormik } from 'formik';
-import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import { TextInput } from '@strapi/design-system/TextInput';
 import { Tooltip } from '@strapi/design-system/Tooltip';
+import UserValidationSchema from '../utils/validations/userValidationSchema';
 
 const AddUserModal = (props) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const { data, setData } = useData();
+  const [isVisible, setIsVisible] = useState(false);
+  const { data, setData } = useData();
 
-    const UserFormSchema = Yup.object().shape({
-        name: Yup.string()
-            .min(2, 'The name should be at least 2 characters long')
-            .max(50, "The name should have maximum 50 characters'")
-            .matches(
-                /^([ \u00c0-\u01ffa-zA-Z'\-])+$/,
-                "The name can contain only letters, spaces and these special characters: ' and - "
-            )
-            .required('Required'),
-        surname: Yup.string()
-            .min(2, 'The surname should be at least 2 characters long')
-            .max(50, "The surname should have maximum 50 characters'")
-            .matches(
-                /^([ \u00c0-\u01ffa-zA-Z'\-])+$/,
-                "The surname can contain only letters, spaces and these special characters: ' and - "
-            )
-            .required('Required'),
-        phoneNumber: Yup.string()
-            .length(10, 'The phone number must be 10 digits long')
-            .matches(/^\d+$/, 'The phone number can contain only digits ')
-            .required('Required'),
-    });
+  const phoneNumberIsUnique = (phoneNumber) => {
+    const phoneNumberArr = data.users.map((user) => user.phoneNumber);
+    return !phoneNumberArr.includes(phoneNumber);
+  };
 
-    const phoneNumberIsUnique = (phoneNumber) => {
-        const phoneNumberArr = data.users.map((user) => user.phoneNumber);
-        return !phoneNumberArr.includes(phoneNumber);
-    };
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      surname: '',
+      phoneNumber: '',
+    },
+    validationSchema: UserValidationSchema,
+    onSubmit: (values) => {
+      if (formik.isValid && phoneNumberIsUnique(formik.values.phoneNumber)) {
+        const newUser = {
+          ...values,
+          hasRentedBook: false,
+          startingDate: '-',
+          hasToPay: 0,
+          rentedBookIsbn: '',
+        };
+        setData({ ...data, users: [...data.users, newUser] });
+        setIsVisible((prev) => !prev);
+      }
+    },
+  });
 
-    const formik = useFormik({
-        initialValues: {
-            name: '',
-            surname: '',
-            phoneNumber: '',
-        },
-        validationSchema: UserFormSchema,
-        onSubmit: (values) => {
-            if (
-                formik.isValid &&
-                phoneNumberIsUnique(formik.values.phoneNumber)
-            ) {
-                const newUser = {
-                    ...values,
-                    hasRentedBook: false,
-                    startingDate: '-',
-                    hasToPay: 0,
-                    rentedBookIsbn: '',
-                };
-                setData({ ...data, users: [...data.users, newUser] });
-                setIsVisible((prev) => !prev);
-            }
-        },
-    });
-
-    return (
-        <>
-            <TFooter
-                onClick={() => setIsVisible((prev) => !prev)}
-                icon={<Plus />}
+  return (
+    <>
+      <TFooter onClick={() => setIsVisible((prev) => !prev)} icon={<Plus />}>
+        Add a new user
+      </TFooter>
+      {isVisible && (
+        <ModalLayout
+          onClose={() => setIsVisible((prev) => !prev)}
+          labelledBy="title"
+        >
+          <ModalHeader>
+            <Typography
+              fontWeight="bold"
+              textColor="neutral800"
+              as="h2"
+              id="title"
             >
-                Add a new user
-            </TFooter>
-            {isVisible && (
-                <ModalLayout
-                    onClose={() => setIsVisible((prev) => !prev)}
-                    labelledBy="title"
-                >
-                    <ModalHeader>
-                        <Typography
-                            fontWeight="bold"
-                            textColor="neutral800"
-                            as="h2"
-                            id="title"
-                        >
-                            Add a new user
-                        </Typography>
-                    </ModalHeader>
-                    <ModalBody>
-                        {/*<DatePicker onChange={setDate} selectedDate={date} label="Date picker" name="datepicker" clearLabel={'Clear the datepicker'} onClear={() => setDate(undefined)} selectedDateLabel={formattedDate => `Date picker, current is ${formattedDate}`} />*/}
-                        <form id="user-form" onSubmit={formik.handleSubmit}>
-                            <Box paddingTop={2} paddingBottom={2}>
-                                <TextInput
-                                    id="name"
-                                    name="name"
-                                    label="Name"
-                                    error={
-                                        formik.touched.name &&
-                                        Boolean(formik.errors.name)
-                                            ? formik.errors.name
-                                            : ''
-                                    }
-                                    placeholder="Name"
-                                    required
-                                    hint="Example: Romeo and Juliet"
-                                    value={formik.values.name}
-                                    onChange={formik.handleChange}
-                                    labelAction={
-                                        <Tooltip description="Content of the tooltip">
-                                            <button
-                                                aria-label="Information about the email"
-                                                style={{
-                                                    border: 'none',
-                                                    padding: 0,
-                                                    background: 'transparent',
-                                                }}
-                                            ></button>
-                                        </Tooltip>
-                                    }
-                                />
-                            </Box>
-                            <Box paddingTop={2} paddingBottom={2}>
-                                <TextInput
-                                    id="surname"
-                                    name="surname"
-                                    label="Surname"
-                                    required
-                                    error={
-                                        formik.touched.surname &&
-                                        Boolean(formik.errors.surname)
-                                            ? formik.errors.surname
-                                            : ''
-                                    }
-                                    placeholder="Surname"
-                                    hint="Example: William Shakespeare"
-                                    value={formik.values.surname}
-                                    onChange={formik.handleChange}
-                                    labelAction={
-                                        <Tooltip description="Content of the tooltip">
-                                            <button
-                                                aria-label="Information about the email"
-                                                style={{
-                                                    border: 'none',
-                                                    padding: 0,
-                                                    background: 'transparent',
-                                                }}
-                                            ></button>
-                                        </Tooltip>
-                                    }
-                                />
-                            </Box>
-                            <Box paddingTop={2} paddingBottom={2}>
-                                <TextInput
-                                    id="phoneNumber"
-                                    name="phoneNumber"
-                                    label="Phone Number"
-                                    error={
-                                        formik.touched.phoneNumber &&
-                                        Boolean(formik.errors.phoneNumber)
-                                            ? formik.errors.phoneNumber
-                                            : phoneNumberIsUnique(
-                                                  formik.values.phoneNumber
-                                              )
-                                            ? ''
-                                            : "There's already a user registered with this phone number. The phone number must be unique!"
-                                    }
-                                    required
-                                    placeholder="Phone number"
-                                    value={formik.values.phoneNumber}
-                                    onChange={formik.handleChange}
-                                    labelAction={
-                                        <Tooltip description="Content of the tooltip">
-                                            <button
-                                                aria-label="Information about the email"
-                                                style={{
-                                                    border: 'none',
-                                                    padding: 0,
-                                                    background: 'transparent',
-                                                }}
-                                            ></button>
-                                        </Tooltip>
-                                    }
-                                />
-                            </Box>
-                        </form>
-                    </ModalBody>
-                    <ModalFooter
-                        startActions={
-                            <Button
-                                onClick={() => setIsVisible((prev) => !prev)}
-                                variant="tertiary"
-                            >
-                                Cancel
-                            </Button>
-                        }
-                        endActions={
-                            <>
-                                <Button form="user-form" type="submit">
-                                    Finish
-                                </Button>
-                            </>
-                        }
-                    />
-                </ModalLayout>
-            )}
-        </>
-    );
+              Add a new user
+            </Typography>
+          </ModalHeader>
+          <ModalBody>
+            <form id="user-form" onSubmit={formik.handleSubmit}>
+              <Box paddingTop={2} paddingBottom={2}>
+                <TextInput
+                  id="name"
+                  name="name"
+                  label="Name"
+                  error={
+                    formik.touched.name && Boolean(formik.errors.name)
+                      ? formik.errors.name
+                      : ''
+                  }
+                  placeholder="Name"
+                  required
+                  hint="Example: Romeo and Juliet"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  labelAction={
+                    <Tooltip description="Content of the tooltip">
+                      <button
+                        aria-label="Information about the email"
+                        style={{
+                          border: 'none',
+                          padding: 0,
+                          background: 'transparent',
+                        }}
+                      ></button>
+                    </Tooltip>
+                  }
+                />
+              </Box>
+              <Box paddingTop={2} paddingBottom={2}>
+                <TextInput
+                  id="surname"
+                  name="surname"
+                  label="Surname"
+                  required
+                  error={
+                    formik.touched.surname && Boolean(formik.errors.surname)
+                      ? formik.errors.surname
+                      : ''
+                  }
+                  placeholder="Surname"
+                  hint="Example: William Shakespeare"
+                  value={formik.values.surname}
+                  onChange={formik.handleChange}
+                  labelAction={
+                    <Tooltip description="Content of the tooltip">
+                      <button
+                        aria-label="Information about the email"
+                        style={{
+                          border: 'none',
+                          padding: 0,
+                          background: 'transparent',
+                        }}
+                      ></button>
+                    </Tooltip>
+                  }
+                />
+              </Box>
+              <Box paddingTop={2} paddingBottom={2}>
+                <TextInput
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  label="Phone Number"
+                  error={
+                    formik.touched.phoneNumber &&
+                    Boolean(formik.errors.phoneNumber)
+                      ? formik.errors.phoneNumber
+                      : phoneNumberIsUnique(formik.values.phoneNumber)
+                      ? ''
+                      : "There's already a user registered with this phone number. The phone number must be unique!"
+                  }
+                  required
+                  placeholder="Phone number"
+                  value={formik.values.phoneNumber}
+                  onChange={formik.handleChange}
+                  labelAction={
+                    <Tooltip description="Content of the tooltip">
+                      <button
+                        aria-label="Information about the email"
+                        style={{
+                          border: 'none',
+                          padding: 0,
+                          background: 'transparent',
+                        }}
+                      ></button>
+                    </Tooltip>
+                  }
+                />
+              </Box>
+            </form>
+          </ModalBody>
+          <ModalFooter
+            startActions={
+              <Button
+                onClick={() => setIsVisible((prev) => !prev)}
+                variant="tertiary"
+              >
+                Cancel
+              </Button>
+            }
+            endActions={
+              <>
+                <Button form="user-form" type="submit">
+                  Finish
+                </Button>
+              </>
+            }
+          />
+        </ModalLayout>
+      )}
+    </>
+  );
 };
 
 export default AddUserModal;

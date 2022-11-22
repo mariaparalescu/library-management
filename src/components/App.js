@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import NavBar from './NavBar';
 import { ThemeProvider } from '@strapi/design-system/ThemeProvider';
 import { lightTheme } from '@strapi/design-system/themes';
@@ -7,39 +7,18 @@ import ManageBooks from '../pages/ManageBooks';
 import UsersTable from './UsersTable';
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <ThemeProvider theme={lightTheme}>
-                            <NavBar />
-                        </ThemeProvider>
-                    }
-                >
-                    {/*<Route path="/" element={ <MinimalNabar />}>*/}
-                    <Route index element={<div>Homepage</div>} />
-                    <Route
-                        path="books"
-                        element={
-                            <ThemeProvider theme={lightTheme}>
-                                <ManageBooks />
-                            </ThemeProvider>
-                        }
-                    />
-                    <Route
-                        path="users"
-                        element={
-                            <ThemeProvider theme={lightTheme}>
-                                <UsersTable />
-                            </ThemeProvider>
-                        }
-                    />
-                </Route>
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <ThemeProvider theme={lightTheme}>
+        <Routes>
+          <Route path="/" element={<NavBar />}>
+            <Route index path="books" element={<ManageBooks />} />
+            <Route path="users" element={<UsersTable />} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
+    </BrowserRouter>
+  );
 }
 
 export default App;

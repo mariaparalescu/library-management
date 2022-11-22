@@ -3,11 +3,11 @@ import BooksTable from '../components/BooksTable';
 import BooksModal from '../components/BooksModal';
 
 const ManageBooks = () => {
-    return (
-        <>
-            <BooksTable />
-        </>
-    );
+  return (
+    <>
+      <BooksTable />
+    </>
+  );
 };
 
 export default ManageBooks;
