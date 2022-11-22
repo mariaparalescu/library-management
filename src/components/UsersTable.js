@@ -62,7 +62,7 @@ const UsersTable = () => {
         </Thead>
         <Tbody>
           {data?.users?.map((entry, index) => (
-            <Tr key={index}>
+            <Tr key={`row-${index}`}>
               <Td contenteditable="true">
                 <Typography textColor="neutral800">{index}</Typography>
               </Td>

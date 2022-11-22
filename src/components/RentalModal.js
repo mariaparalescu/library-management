@@ -89,7 +89,7 @@ const RentalModal = (props) => {
                       (book) =>
                         book.available > 0 && (
                           <Option key={book.isbn} value={`${book.isbn}`}>
-                            {book.title} - {book.author}
+                            {`${book.title} - ${book.author}`}
                           </Option>
                         )
                     )}

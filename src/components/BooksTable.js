@@ -37,7 +37,7 @@ const BooksTable = () => {
         </Thead>
         <Tbody>
           {data?.books?.map((entry, index) => (
-            <Tr key={index}>
+            <Tr key={`row-${index}`}>
               <Td contenteditable="true">
                 <Typography textColor="neutral800">{index}</Typography>
               </Td>
