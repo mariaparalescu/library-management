@@ -41,6 +41,11 @@ const AddUserModal = (props) => {
             .required('Required'),
     });
 
+    const phoneNumberIsUnique = (phoneNumber) => {
+        const phoneNumberArr = data.users.map((user) => user.phoneNumber);
+        return !phoneNumberArr.includes(phoneNumber);
+    };
+
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -49,7 +54,10 @@ const AddUserModal = (props) => {
         },
         validationSchema: UserFormSchema,
         onSubmit: (values) => {
-            if (formik.isValid) {
+            if (
+                formik.isValid &&
+                phoneNumberIsUnique(formik.values.phoneNumber)
+            ) {
                 const newUser = {
                     ...values,
                     hasRentedBook: false,
@@ -158,7 +166,11 @@ const AddUserModal = (props) => {
                                         formik.touched.phoneNumber &&
                                         Boolean(formik.errors.phoneNumber)
                                             ? formik.errors.phoneNumber
-                                            : ''
+                                            : phoneNumberIsUnique(
+                                                  formik.values.phoneNumber
+                                              )
+                                            ? ''
+                                            : "There's already a user registered with this phone number. The phone number must be unique!"
                                     }
                                     required
                                     placeholder="Phone number"

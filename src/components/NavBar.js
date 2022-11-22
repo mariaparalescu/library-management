@@ -13,6 +13,7 @@ import { Write, Layer, Book, Archive, User, Dashboard } from '@strapi/icons';
 import { BaseHeaderLayout } from '@strapi/design-system/Layout';
 
 import { Outlet } from 'react-router-dom';
+
 const NavBar = () => {
     const [condensed, setCondensed] = useState(false);
     return (
@@ -25,6 +26,7 @@ const NavBar = () => {
         >
             <MainNav condensed={condensed}>
                 <NavBrand
+                    style={{ padding: '1rem' }}
                     workplace="Workplace"
                     title="Library dashboard"
                     icon={<Write />}
@@ -41,9 +43,6 @@ const NavBar = () => {
                         <NavLink to="/users" icon={<User />}>
                             Users
                         </NavLink>
-                        <NavLink to="/rental" icon={<Archive />}>
-                            Rented books
-                        </NavLink>
                     </NavSection>
                 </NavSections>
                 <NavUser
@@ -57,16 +56,7 @@ const NavBar = () => {
                 </NavCondense>
             </MainNav>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <BaseHeaderLayout
-                    title="Media Library"
-                    subtitle={
-                        <Breadcrumbs label="folders">
-                            <Crumb>Animals</Crumb>
-                            <Crumb>Cats</Crumb>
-                        </Breadcrumbs>
-                    }
-                    as="h2"
-                />
+                <BaseHeaderLayout padding={2} title="Media Library" as="h2" />
                 <Outlet />
             </div>
         </Box>

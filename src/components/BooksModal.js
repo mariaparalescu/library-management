@@ -44,12 +44,13 @@ const BooksModal = (props) => {
                 /978[0-9]{10}/,
                 'The number should start with 978 and should have the length 13'
             )
-            // .notOneOf(
-            //     data?.books.map((book) => book.isbn),
-            //     "You can't have 2 books with the same isbn"
-            // )
             .required('Required'),
     });
+
+    const isbnIsUnique = (isbn) => {
+        const isbnArr = data.books.map((book) => book.isbn);
+        return !isbnArr.includes(isbn);
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -60,7 +61,7 @@ const BooksModal = (props) => {
         },
         validationSchema: BookFormSchema,
         onSubmit: (values) => {
-            if (formik.isValid) {
+            if (formik.isValid && isbnIsUnique(formik.values.isbn)) {
                 const newBook = { ...values, copies: 1, available: 1 };
                 setData({ ...data, books: [...data.books, newBook] });
                 setIsVisible((prev) => !prev);
@@ -192,7 +193,9 @@ const BooksModal = (props) => {
                                         formik.touched.isbn &&
                                         Boolean(formik.errors.isbn)
                                             ? formik.errors.isbn
-                                            : ''
+                                            : isbnIsUnique(formik.values.isbn)
+                                            ? ''
+                                            : 'This isbn is already used. The isbn must be unique!'
                                     }
                                     type="number"
                                     required

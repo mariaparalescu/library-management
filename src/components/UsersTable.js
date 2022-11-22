@@ -188,7 +188,7 @@ const UsersTable = () => {
                             </Td>
                             <Td>
                                 <Typography textColor="neutral800">
-                                    {entry.hasToPay}
+                                    {`${entry.hasToPay} RON`}
                                 </Typography>
                             </Td>
                             <Td>

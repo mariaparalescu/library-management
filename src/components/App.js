@@ -36,7 +36,6 @@ function App() {
                             </ThemeProvider>
                         }
                     />
-                    <Route path="rental" element={<div>books</div>} />
                 </Route>
             </Routes>
         </BrowserRouter>
