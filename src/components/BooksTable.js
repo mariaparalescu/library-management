@@ -12,36 +12,27 @@ const BooksTable = () => {
   const { data, removeBook, increaseBook, decreaseBook } = useData();
   const ROW_COUNT = 6;
   const COL_COUNT = 10;
+  const HEADERS = [
+    'ID',
+    'ISBN',
+    'Title',
+    'Author',
+    'Price',
+    'Copies',
+    'Available',
+    '',
+  ];
 
   return (
     <Box padding={8} background="neutral100">
       <Table colCount={COL_COUNT} rowCount={ROW_COUNT} footer={<BooksModal />}>
         <Thead>
           <Tr>
-            <Th>
-              <Typography variant="sigma">ID</Typography>
-            </Th>
-            <Th>
-              <Typography variant="sigma">ISBN</Typography>
-            </Th>
-            <Th>
-              <Typography variant="sigma">Title</Typography>
-            </Th>
-            <Th>
-              <Typography variant="sigma">Author</Typography>
-            </Th>
-            <Th>
-              <Typography variant="sigma">Price</Typography>
-            </Th>
-            <Th>
-              <Typography variant="sigma">Copies</Typography>
-            </Th>
-            <Th>
-              <Typography variant="sigma">Available</Typography>
-            </Th>
-            <Th>
-              <Typography variant="sigma"></Typography>
-            </Th>
+            {HEADERS.map((header) => (
+              <Th key={header}>
+                <Typography variant="sigma"> {header}</Typography>
+              </Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody>

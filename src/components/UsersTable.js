@@ -44,10 +44,6 @@ const UsersTable = () => {
     return false;
   };
 
-  for (let i = 0; i < data.users.length; i++) {
-    entries.push({ ...data.users[i], id: i });
-  }
-
   return (
     <Box padding={8} background="neutral100">
       <Table
@@ -65,10 +61,10 @@ const UsersTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {entries.map((entry) => (
-            <Tr key={entry.id}>
+          {data?.users?.map((entry, index) => (
+            <Tr key={index}>
               <Td contenteditable="true">
-                <Typography textColor="neutral800">{entry.id}</Typography>
+                <Typography textColor="neutral800">{index}</Typography>
               </Td>
               <Td contenteditable="true">
                 <Typography textColor="neutral800">{entry.name}</Typography>
