@@ -10,7 +10,7 @@ import AddUserModal from './AddUserModal';
 import RentalModal from './RentalModal';
 
 const UsersTable = () => {
-  const { data, setData, removeUser } = useData();
+  const { data, setData, removeUser, returnBook } = useData();
   const ROW_COUNT = 6;
   const COL_COUNT = 10;
   const entries = [];
@@ -35,7 +35,6 @@ const UsersTable = () => {
   const hasToPay = (user) => {
     const today = new Date();
     const startingDate = new Date(user.startingDate);
-    console.log('===sd', typeof startingDate, typeof today, today);
     const difference =
       (today.getTime() - startingDate.getTime()) / (1000 * 3600 * 24);
     if (difference > 14) {
@@ -43,44 +42,6 @@ const UsersTable = () => {
       return newPrice.toFixed(2);
     }
     return false;
-  };
-
-  const updateUsersOnReturn = (phoneNumber) => {
-    const userIndex = data.users.findIndex(
-      (user) => user.phoneNumber === phoneNumber
-    );
-    const usersCopy = [...data.users];
-    if (usersCopy[userIndex].hasRentedBook) {
-      usersCopy[userIndex].startingDate = '-';
-      usersCopy[userIndex].hasToPay = 0;
-      usersCopy[userIndex].hasRentedBook = false;
-      usersCopy[userIndex].rentedBookIsbn = '';
-      usersCopy[userIndex].rentedBookTitle = '';
-      usersCopy[userIndex].rentedBookAuthor = '';
-    }
-    return usersCopy;
-  };
-
-  const updateBooksAvailability = (phoneNumber) => {
-    const userIndex = data.users.findIndex(
-      (user) => user.phoneNumber === phoneNumber
-    );
-    const booksCopy = [...data.books];
-    if (data.users[userIndex].hasRentedBook) {
-      const bookIndex = data.books.findIndex(
-        (book) => `${book.isbn}` === data.users[userIndex].rentedBookIsbn
-      );
-      booksCopy[bookIndex].available++;
-    }
-    return booksCopy;
-  };
-
-  const returnBook = (user) => {
-    setData({
-      ...data,
-      books: updateBooksAvailability(user.phoneNumber),
-      users: updateUsersOnReturn(user.phoneNumber),
-    });
   };
 
   for (let i = 0; i < data.users.length; i++) {
@@ -147,7 +108,7 @@ const UsersTable = () => {
               <Td>
                 <IconButton
                   onClick={() => {
-                    returnBook(entry);
+                    returnBook(entry.phoneNumber);
                   }}
                   label="Return the book"
                   noBorder

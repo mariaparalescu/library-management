@@ -17,44 +17,12 @@ import { RentalFormSchema } from '../utils/validations/rentValidationSchema';
 
 const RentalModal = (props) => {
   const [isVisible, setIsVisible] = useState(false);
-  const { data, setData } = useData();
+  const { data, rentBook } = useData();
   const [date, setDate] = useState();
   const [value, setValue] = useState();
   const [disabled, toggleDisabled] = useState();
 
-  let today = new Date();
-
-  const findBookIndexByIsbn = () => {
-    const bookIndex = data.books.findIndex(
-      (book) => `${book.isbn}` === formik.values.isbn
-    );
-    return bookIndex;
-  };
-
-  const updateUsers = (phoneNumber) => {
-    const userIndex = data.users.findIndex(
-      (user) => user.phoneNumber === phoneNumber
-    );
-    const bookIndex = findBookIndexByIsbn();
-
-    const usersCopy = [...data.users];
-    if (!usersCopy[userIndex].hasRentedBook) {
-      usersCopy[userIndex].startingDate = formik.values.date;
-      usersCopy[userIndex].hasRentedBook = true;
-      usersCopy[userIndex].rentedBookIsbn = formik.values.isbn;
-      usersCopy[userIndex].rentedBookTitle = data.books[bookIndex].title;
-      usersCopy[userIndex].hasToPay = data.books[bookIndex].price;
-      usersCopy[userIndex].rentedBookAuthor = data.books[bookIndex].author;
-    }
-    return usersCopy;
-  };
-
-  const updateBooksAvailability = () => {
-    const bookIndex = findBookIndexByIsbn();
-    const booksCopy = [...data.books];
-    booksCopy[bookIndex].available--;
-    return booksCopy;
-  };
+  const today = new Date();
 
   const formik = useFormik({
     initialValues: {
@@ -64,11 +32,11 @@ const RentalModal = (props) => {
     validationSchema: RentalFormSchema,
     onSubmit: (values) => {
       if (formik.isValid) {
-        setData({
-          ...data,
-          books: updateBooksAvailability(),
-          users: updateUsers(props.user.phoneNumber),
-        });
+        rentBook(
+          props.user.phoneNumber,
+          formik.values.isbn,
+          formik.values.date
+        );
         setIsVisible((prev) => !prev);
       }
     },

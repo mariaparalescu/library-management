@@ -18,8 +18,10 @@ export const DataProvider = ({ children }) => {
     addUser: (user) => dispatch({ type: actions.ADD_USER, user }),
     removeUser: (phoneNumber) =>
       dispatch({ type: actions.REMOVE_USER, phoneNumber }),
-    rentBook: (phoneNumber) =>
-      dispatch({ type: actions.RENT_BOOK, phoneNumber }),
+    rentBook: (phoneNumber, isbn, date) =>
+      dispatch({ type: actions.RENT_BOOK, phoneNumber, isbn, date }),
+    returnBook: (phoneNumber) =>
+      dispatch({ type: actions.RETURN_BOOK, phoneNumber }),
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
