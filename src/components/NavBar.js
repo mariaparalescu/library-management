@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import {
   MainNav,
   NavSection,
@@ -8,8 +8,8 @@ import {
   NavUser,
   NavLink,
 } from '@strapi/design-system/MainNav';
-import { Divider, Box, Breadcrumbs, Crumb } from '@strapi/design-system';
-import { Write, Layer, Book, Archive, User, Dashboard } from '@strapi/icons';
+import { Divider, Box } from '@strapi/design-system';
+import { Write, Book, User } from '@strapi/icons';
 import { BaseHeaderLayout } from '@strapi/design-system/Layout';
 
 import { Outlet } from 'react-router-dom';

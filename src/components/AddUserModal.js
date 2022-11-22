@@ -14,7 +14,7 @@ import { TextInput } from '@strapi/design-system/TextInput';
 import { Tooltip } from '@strapi/design-system/Tooltip';
 import UserValidationSchema from '../utils/validations/userValidationSchema';
 
-const AddUserModal = (props) => {
+const AddUserModal = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { data, addUser } = useData();
 

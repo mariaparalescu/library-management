@@ -14,7 +14,7 @@ import { TextInput } from '@strapi/design-system/TextInput';
 import { Tooltip } from '@strapi/design-system/Tooltip';
 import BookFormSchema from '../utils/validations/booksValidationSchema';
 
-const AddBookModal = (props) => {
+const AddBookModal = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { data, addBook } = useData();
 
