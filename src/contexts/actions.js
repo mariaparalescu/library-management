@@ -2,17 +2,17 @@ export const initialState = {
   books: [
     {
       isbn: 9783161484100,
-      title: 'Booky',
-      author: 'Lala',
+      title: 'The Great Gatsby',
+      author: 'F. Scott Fitzgerald',
       price: 6,
       copies: 1,
       available: 1,
     },
     {
       isbn: 9783161484101,
-      title: 'Paine si vin',
-      author: 'Charles Bukovskyite',
-      price: 6,
+      title: 'Hamlet',
+      author: 'William Shakespeare',
+      price: 7,
       copies: 1,
       available: 1,
     },
