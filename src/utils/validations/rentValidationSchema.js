@@ -1,8 +1,11 @@
 import * as Yup from 'yup';
 
+let today = new Date();
+today.setDate(today.getDate() - 1);
+
 export const RentalFormSchema = Yup.object().shape({
   isbn: Yup.string().required('Required'),
   date: Yup.date()
-    .min(new Date(), "The rental date can't be in the past")
+    .min(today, "The rental date can't be in the past")
     .required('Required'),
 });

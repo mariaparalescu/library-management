@@ -22,7 +22,8 @@ const RentalModal = (props) => {
   const [value, setValue] = useState();
   const [disabled, toggleDisabled] = useState();
 
-  const today = new Date();
+  let today = new Date();
+  today.setDate(today.getDate() - 1);
 
   const formik = useFormik({
     initialValues: {
