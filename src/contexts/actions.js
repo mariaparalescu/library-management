@@ -3,7 +3,7 @@ export const initialState = {
     {
       isbn: 9783161484100,
       title: 'The Great Gatsby',
-      author: 'F. Scott Fitzgerald',
+      author: 'Scott Fitzgerald',
       price: 6,
       copies: 1,
       available: 1,
