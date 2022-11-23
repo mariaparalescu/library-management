@@ -9,7 +9,6 @@ import { Button, Typography, DatePicker } from '@strapi/design-system';
 import { Plus } from '@strapi/icons';
 import { useData } from '../contexts/DataProvider';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { IconButton } from '@strapi/design-system/IconButton';
 import { Select, Option } from '@strapi/design-system/Select';
 import { Stack } from '@strapi/design-system/Stack';
@@ -19,8 +18,6 @@ const RentalModal = (props) => {
   const [isVisible, setIsVisible] = useState(false);
   const { data, rentBook } = useData();
   const [date, setDate] = useState();
-  const [value, setValue] = useState();
-  const [disabled, toggleDisabled] = useState();
 
   let today = new Date();
   today.setDate(today.getDate() - 1);
@@ -78,12 +75,11 @@ const RentalModal = (props) => {
                     label="Available books"
                     required
                     placeholder="Please select a book"
-                    onClear={() => setValue(undefined)}
                     clearLabel="Clear"
                     error={formik.errors.isbn}
                     value={formik.values.isbn}
                     onChange={(e) => formik.setFieldValue('isbn', e)}
-                    disabled={disabled}
+                    disabled={false}
                     startIcon={<Plus />}
                   >
                     {data.books.map(
